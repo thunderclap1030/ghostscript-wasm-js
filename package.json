@@ -1,0 +1,31 @@
+{
+  "name": "ghostscript-wasm",
+  "version": "1.0.0",
+  "description": "Ghostscript-WASM allows you to render PS/EPS/PDF files entirely in WebAssembly with no native dependencies",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha.js tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thunderclap1030/ghostscript-wasm-js.git"
+  },
+  "keywords": [
+    "ghostscript",
+    "wasm",
+    "javascript"
+  ],
+  "author": "thunderclap1030@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thunderclap1030/ghostscript-wasm-js/issues"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "mocha": "^10.0.0"
+  },
+  "homepage": "https://github.com/thunderclap1030/ghostscript-wasm-js#readme"
+}

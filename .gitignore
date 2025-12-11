@@ -1,0 +1,12 @@
+node_modules
+dist
+src
+out
+pkg
+target
+*.sublime-project
+*.sublime-workspace
+*.DS_Store
+
+emsdk
+.idea

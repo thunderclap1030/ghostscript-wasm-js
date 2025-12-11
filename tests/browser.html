@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ghostscript Browser Demo</title>
+  <style>
+      body { font-family: sans-serif; padding: 20px; }
+      img { max-width: 300px; border: 1px solid #ccc; margin-top: 20px; }
+  </style>
+</head>
+<body>
+<h1>Ghostscript WASM Demo (EPS to PNG)</h1>
+
+<button id="run">Render</button>
+<div id="output"></div>
+
+<script>
+  var Module = {
+    locateFile: (file) => "../dist/" + file
+  };
+</script>
+
+<!-- Load gs.js -->
+<script src="../dist/gs.js"></script>
+
+<script>
+  async function runGS() {
+    const output = document.getElementById("output");
+    output.textContent = "Running Ghostscript...";
+
+    const mod = await Module();
+
+    mod.FS.mkdir("/work");
+    mod.FS.chdir("/work");
+
+    const resp = await fetch("assets/tiger.eps");
+    const buffer = await resp.arrayBuffer();
+    mod.FS.writeFile("tiger.eps", new Uint8Array(buffer));
+
+    const exitCode = mod.callMain([
+      "-dSAFER",
+      "-dBATCH",
+      "-dNOPAUSE",
+      "-sDEVICE=png16m",
+      "-sOutputFile=tiger.png",
+      "tiger.eps"
+    ]);
+
+    if (exitCode !== 0) {
+      output.innerHTML = `<p style="color:red;">Ghostscript ERROR: ${exitCode}</p>`;
+      return;
+    }
+
+    const pngBytes = mod.FS.readFile("tiger.png");
+    const blob = new Blob([pngBytes], { type: "image/png" });
+    const url = URL.createObjectURL(blob);
+
+    output.innerHTML = `<h3>Result: </h3><img src="${url}">`;
+  }
+
+  document.getElementById("run").onclick = runGS;
+</script>
+</body>
+</html>
